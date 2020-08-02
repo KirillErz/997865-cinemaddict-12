@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Кирилл Ерзылев](https://up.htmlacademy.ru/ecmascript/12/user/997865).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Рубенов](https://htmlacademy.ru/profile/rubenovdev).
 
 ---
 
