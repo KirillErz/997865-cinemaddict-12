@@ -2,8 +2,11 @@
 
 const MOVIE_CARDS = 5;
 const MOVIE_CARDS_EXTRA = 2;
-const BEFO = `beforeend`;
-const AFTE = `afterend`;
+
+const RenderPosition = {
+  BEFO: `beforeend`,
+  AFTE: `afterend`
+};
 
 const createUserTemplate = () => {
   return `<section class="header__profile profile">
@@ -271,15 +274,15 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 const countFilmsElement = document.querySelector(`.footer__statistics`);
 
-render(headerElement, createUserTemplate(), BEFO);
-render(mainElement, createMenuTemplate(), BEFO);
-render(mainElement, createFilterTemplate(), BEFO);
-render(mainElement, createBoardTemplate(), BEFO);
+render(headerElement, createUserTemplate(), RenderPosition.BEFO);
+render(mainElement, createMenuTemplate(), RenderPosition.BEFO);
+render(mainElement, createFilterTemplate(), RenderPosition.BEFO);
+render(mainElement, createBoardTemplate(), RenderPosition.BEFO);
 
 const cardsContainer = document.querySelector(`.films-list__container`);
 
 for (let i = 0; i < MOVIE_CARDS; i++) {
-  render(cardsContainer, createFilmCardTemplate(), BEFO);
+  render(cardsContainer, createFilmCardTemplate(), RenderPosition.BEFO);
 }
 
 const extraListFilms = document.querySelectorAll(`.films-list--extra`);
@@ -287,9 +290,9 @@ const extraListFilms = document.querySelectorAll(`.films-list--extra`);
 for (let i = 0; i < extraListFilms.length; i++) {
   for (let j = 0; j < MOVIE_CARDS_EXTRA; j++) {
     const containerFilms = extraListFilms[i].querySelector(`.films-list__container`);
-    render(containerFilms, createFilmCardTemplate(), BEFO);
+    render(containerFilms, createFilmCardTemplate(), RenderPosition.BEFO);
   }
 }
 
-render(countFilmsElement, createStatisticFilmsTemplate(), BEFO);
-render(footerElement, createFilmDetailsTemplate(), AFTE);
+render(countFilmsElement, createStatisticFilmsTemplate(), RenderPosition.BEFO);
+render(footerElement, createFilmDetailsTemplate(), RenderPosition.AFTE);
