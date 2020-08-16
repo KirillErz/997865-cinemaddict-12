@@ -2,15 +2,18 @@
 
 const MOVIE_CARDS = 5;
 const MOVIE_CARDS_EXTRA = 2;
+const BEFO = `beforeend`;
+const AFTE = `afterend`;
+
 const createUserTemplate = () => {
-  return (`<section class="header__profile profile">
+  return `<section class="header__profile profile">
     <p class="profile__rating">Movie Buff</p>
     <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-  </section>`);
+  </section>`;
 };
 
 const createMenuTemplate = () => {
-  return (`<nav class="main-navigation">
+  return `<nav class="main-navigation">
   <div class="main-navigation__items">
     <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
     <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
@@ -18,19 +21,19 @@ const createMenuTemplate = () => {
     <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
   </div>
   <a href="#stats" class="main-navigation__additional">Stats</a>
-</nav>`);
+</nav>`;
 };
 
 const createFilterTemplate = () => {
-  return (`<ul class="sort">
+  return `<ul class="sort">
   <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
   <li><a href="#" class="sort__button">Sort by date</a></li>
   <li><a href="#" class="sort__button">Sort by rating</a></li>
-</ul>`);
+</ul>`;
 };
 
 const createFilmCardTemplate = () => {
-  return (` <article class="film-card">
+  return ` <article class="film-card">
   <h3 class="film-card__title">The Dance of Life</h3>
   <p class="film-card__rating">8.3</p>
   <p class="film-card__info">
@@ -46,11 +49,11 @@ const createFilmCardTemplate = () => {
     <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
     <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
   </form>
-</article>`);
+</article>`;
 };
 
 const createFilmDetailsTemplate = () => {
-  return (`<section class="film-details">
+  return `<section class="film-details visually-hidden ">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
@@ -218,11 +221,11 @@ const createFilmDetailsTemplate = () => {
       </section>
     </div>
   </form>
-</section>`);
+</section>`;
 };
 
 const createBoardTemplate = () => {
-  return (`  <section class="films">
+  return `  <section class="films">
   <section class="films-list">
     <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
 
@@ -250,11 +253,11 @@ const createBoardTemplate = () => {
 
     </div>
   </section>
-</section>`);
+</section>`;
 };
 
 const createStatisticFilmsTemplate = () => {
-  return (`<p>130 291 movies inside</p>`);
+  return `<p>130 291 movies inside</p>`;
 };
 
 
@@ -265,28 +268,28 @@ const render = (container, template, place) => {
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
-const footer = document.querySelector(`.footer`);
-const countFilms = document.querySelector(`.footer__statistics`);
+const footerElement = document.querySelector(`.footer`);
+const countFilmsElement = document.querySelector(`.footer__statistics`);
 
-render(headerElement, createUserTemplate(), `beforeend`);
-render(mainElement, createMenuTemplate(), `beforeend`);
-render(mainElement, createFilterTemplate(), `beforeend`);
-render(mainElement, createBoardTemplate(), `beforeend`);
+render(headerElement, createUserTemplate(), BEFO);
+render(mainElement, createMenuTemplate(), BEFO);
+render(mainElement, createFilterTemplate(), BEFO);
+render(mainElement, createBoardTemplate(), BEFO);
 
 const cardsContainer = document.querySelector(`.films-list__container`);
 
 for (let i = 0; i < MOVIE_CARDS; i++) {
-  render(cardsContainer, createFilmCardTemplate(), `beforeend`);
+  render(cardsContainer, createFilmCardTemplate(), BEFO);
 }
 
-const extra = document.querySelectorAll(`.films-list--extra`);
+const extraListFilms = document.querySelectorAll(`.films-list--extra`);
 
-for (let i = 0; i < extra.length; i++) {
+for (let i = 0; i < extraListFilms.length; i++) {
   for (let j = 0; j < MOVIE_CARDS_EXTRA; j++) {
-    const container = extra[i].querySelector(`.films-list__container`);
-    render(container, createFilmCardTemplate(), `beforeend`);
+    const containerFilms = extraListFilms[i].querySelector(`.films-list__container`);
+    render(containerFilms, createFilmCardTemplate(), BEFO);
   }
 }
 
-render(countFilms, createStatisticFilmsTemplate(), `beforeend`);
-render(footer, createFilmDetailsTemplate(), `afterend`);
+render(countFilmsElement, createStatisticFilmsTemplate(), BEFO);
+render(footerElement, createFilmDetailsTemplate(), AFTE);
