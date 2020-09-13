@@ -15,7 +15,6 @@ export const createBoardTemplate = () => {
     <div class="films-list__container">
 
 
-
     </div>
   </section>
 
