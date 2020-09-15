@@ -1,32 +1,38 @@
 
 export const createFilmDetailsTemplate = (movie) => {
-  const {id, comments, film_info: {...film}, user_details: {...user}} = movie || {};
+  const {comments, filmInfo, userDetails} = movie || {};
 
-  const writers = film.writers.join(`, `);
-  const actors = film.actors.join(`, `);
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const month = new Date(film.release.date).toLocaleString('en-US', {month: 'long'});
-  const day = new Date(film.release.date).toLocaleString('en-US', {day: 'numeric'});
-  const year = new Date(film.release.date).toLocaleString('en-US', {year: 'numeric'});
-  const releaseDate = (day + month + year);
-  const time = (film.runtime / 60 | 0) + `h` + ` ` + (film.runtime % 60) + `m`;
+  const writers = filmInfo.writers.join(`, `);
+  const actors = filmInfo.actors.join(`, `);
+  const monthRelease = new Date(filmInfo.release.date).toLocaleString(`en-US'`, {month: `long`});
+  const dayRelease = new Date(filmInfo.release.date).toLocaleString(`en-US`, {day: `numeric`});
+  const yearRelease = new Date(filmInfo.release.date).toLocaleString(`en-US`, {year: `numeric`});
+  const releaseDate = (dayRelease + monthRelease + yearRelease);
+  const time = (filmInfo.runtime / 60 | 0) + `h` + ` ` + (filmInfo.runtime % 60) + `m`;
 
-  const watchingListClass = user.watchlist ? `film-card__controls-item--active` : ``;
-  const alreadyWatchedClass = user.already_watched ? `film-card__controls-item--active` : ``;
-  const favoriteClass = user.favorite ? `film-card__controls-item--active` : ``;
+  const watchingListClass = userDetails.watchlist ? `film-card__controls-item--active` : ``;
+  const alreadyWatchedClass = userDetails.alreadyWatched ? `film-card__controls-item--active` : ``;
+  const favoriteClass = userDetails.favorite ? `film-card__controls-item--active` : ``;
 
-  const valuesToString =  (...rest) => {
-    var s = Array.prototype.join.call("");
-  }
-  valuesToString (day, month, year);
 
-  const  createGenreTemplate = film.genre.map((value) => {
-    return  `<span class="film-details__genre">${value}</span>`
+  const createGenreTemplate = filmInfo.genre.map((value) => {
+    return `<span class="film-details__genre">${value}</span>`;
   }).join(``);
 
+  // Обман
+  const description = filmInfo.description.length > 139 ? filmInfo.description.substr(0, 139) + `(...)` : filmInfo.description;
+
+  const fomationDateComment = (date) => {
+    const monthComment = new Date(date).toLocaleString(`en-US`, {month: `numeric`});
+    const dayComment = new Date(date).toLocaleString(`en-US`, {day: `numeric`});
+    const yearComment = new Date(date).toLocaleString(`en-US`, {year: `numeric`});
+    const timeComment = new Date(date).toLocaleString(`en-GB`, {hour: `2-digit`, minute: `2-digit`, second: `2-digit`});
+    return yearComment + `/` + monthComment + `/` + dayComment + `/` + timeComment;
+  };
+
   const createCommentTemplate = () => {
-  return   comments.map((value) => {
-      return  ` <li class="film-details__comment>
+    return comments.map((value) => {
+      return ` <li class="film-details__comment>
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${value.emotion}.png" width="55" height="55" alt="emoji-smile">
       </span>
@@ -34,15 +40,15 @@ export const createFilmDetailsTemplate = (movie) => {
         <p class="film-details__comment-text">${value.comment}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${value.author}</span>
-          <span class="film-details__comment-day">2019/12/31 23:59</span>
+          <span class="film-details__comment-day">${fomationDateComment(value.date)}</span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>
-    </li>`
+    </li>`;
     }).join(``);
-  }
+  };
 
-  return `<section class="film-details" style="display:none">
+  return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
@@ -52,25 +58,25 @@ export const createFilmDetailsTemplate = (movie) => {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
 
-          <p class="film-details__age">${film.age_rating}+</p>
+          <p class="film-details__age">${filmInfo.ageRating}+</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${film.title}</h3>
-              <p class="film-details__title-original">Original: ${film.alternative_title}</p>
+              <h3 class="film-details__title">${filmInfo.title}</h3>
+              <p class="film-details__title-original">Original: ${filmInfo.alternative_title}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${film.total_rating}</p>
+              <p class="film-details__total-rating">${filmInfo.totalRating}</p>
             </div>
           </div>
 
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
-              <td class="film-details__cell">${film.director}</td>
+              <td class="film-details__cell">${filmInfo.director}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
@@ -78,7 +84,7 @@ export const createFilmDetailsTemplate = (movie) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${film.actors}</td>
+              <td class="film-details__cell">${actors}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
@@ -90,7 +96,7 @@ export const createFilmDetailsTemplate = (movie) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${film.release.release_country}</td>
+              <td class="film-details__cell">${filmInfo.release.release_country}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
@@ -100,7 +106,7 @@ export const createFilmDetailsTemplate = (movie) => {
           </table>
 
           <p class="film-details__film-description">
-            ${film.description}
+            ${description}
           </p>
         </div>
       </div>
@@ -119,8 +125,7 @@ export const createFilmDetailsTemplate = (movie) => {
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
-
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
         <ul class="film-details__comments-list">
           ${createCommentTemplate()}
         </ul>
@@ -159,3 +164,5 @@ export const createFilmDetailsTemplate = (movie) => {
   </form>
 </section>`;
 };
+
+

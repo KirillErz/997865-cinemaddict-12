@@ -7,11 +7,12 @@ import {createStatisticFilmsTemplate} from "./view/statistic-films.js";
 import {createFilmDetailsTemplate} from "./view/film-detail.js";
 import {generateMovie, generateRatingUser} from "./mock/film.js";
 import {generateFilter} from "./mock/filter.js";
+import {isNotMovie} from "./view/service-replies.js";
 
 
 
 const countOfdisplayedMovie = 5;
-const MOVIE_CARDS = 24;
+const MOVIE_CARDS = 6;
 const MOVIE_CARDS_EXTRA = 2;
 
 
@@ -47,10 +48,14 @@ const cardsContainer = document.querySelector(`.films-list__container`);
 
 
 const renderFilmCard = (movies) => {
-  for (let i = 0; i < countOfdisplayedMovie; i++) {
-    if ( i < movies.length) {
-      render(cardsContainer, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
+  if (movies.length > 0) {
+    for (let i = 0; i < countOfdisplayedMovie; i++) {
+      if ( i < movies.length) {
+        render(cardsContainer, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
+      }
     }
+  } else {
+    render(cardsContainer, isNotMovie(), RenderPosition.BEFO);
   }
   if (movies.length <= countOfdisplayedMovie) {
     buttonShowMore.classList.add(`visually-hidden`);

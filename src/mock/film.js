@@ -74,12 +74,12 @@ export const generateMovie = () => {
   return {
     "id": generateIdFilm(),
     "comments": generateComment(),
-    "film_info": {
+    "filmInfo": {
       "title": generateFilmName(),
-      "alternative_title": `Laziness Who Sold Themselves`,
-      "total_rating": 7.3,
+      "alternativeTitle": `Laziness Who Sold Themselves`,
+      "totalRating": 7.3,
       "poster": generatePoster(),
-      "age_rating": 0,
+      "ageRating": 0,
       "director": `Tom Ford`,
       "writers": [
         `Takeshi Kitano`, `Takeshi Kitano`
@@ -89,7 +89,7 @@ export const generateMovie = () => {
       ],
       "release": {
         "date": `2019-05-11T00:00:00.000Z`,
-        "release_country": `Finland`
+        "releaseCountry": `Finland`
       },
       "runtime": 73,
       "genre": [
@@ -97,10 +97,10 @@ export const generateMovie = () => {
       ],
       "description": generateDescription(),
     },
-    "user_details": {
+    "userDetails": {
       "watchlist": Boolean(getRandomInteger(0, 1)),
-      "already_watched": Boolean(getRandomInteger(0, 1)),
-      "watching_date": `2019-04-12T16:12:32.554Z`,
+      "alreadyWatched": Boolean(getRandomInteger(0, 1)),
+      "watchingDate": `2019-04-12T16:12:32.554Z`,
       "favorite": Boolean(getRandomInteger(0, 1)),
     }
   };

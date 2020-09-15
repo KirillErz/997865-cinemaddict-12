@@ -2,21 +2,17 @@ export const createUserTemplate = (UserProperties) => {
   const {rating} = UserProperties;
 
   const getStatus = (ratingValue) => {
-    let status = ``;
+
     switch (true) {
       case (ratingValue < 10 && ratingValue > 0):
-        status = `Novice`;
-        break;
+        return `Novice`;
       case (ratingValue > 11 && ratingValue < 20):
-        status = `Fan`;
-        break;
+        return `Fan`;
       case (ratingValue > 20):
-        status = `Movie Buff`;
-        break;
+        return `Movie Buff`;
       default:
-        status = ``;
+        return ``;
     }
-    return status;
   };
 
   return `<section class="header__profile profile">

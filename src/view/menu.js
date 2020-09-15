@@ -13,22 +13,18 @@ export const createMenuTemplate = (filterItems) => {
 };
 
 const getNamefilter = (type) => {
-  let name = ``;
   switch (type) {
     case `all`:
-      name = `All movies`;
-      break;
+      return `All movies`;
     case `watchlist`:
-      name = `Watchlist`;
-      break;
+      return `Watchlist`;
     case `history`:
-      name = `History`;
-      break;
+      return `History`;
     case `favorites`:
-      name = `Favorites`;
-      break;
+      return `Favorites`;
+    default:
+      return ``;
   }
-  return name;
 };
 
 const createFilterItemTemplate = (filter, isChecked) => {
