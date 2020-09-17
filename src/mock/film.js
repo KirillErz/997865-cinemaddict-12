@@ -88,7 +88,7 @@ export const generateMovie = () => {
         `Morgan Freeman`
       ],
       "release": {
-        "date": `2019-05-11T00:00:00.000Z`,
+        "date": `2019-04-12T16:12:32.554Z`,
         "releaseCountry": `Finland`
       },
       "runtime": 73,

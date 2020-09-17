@@ -2,9 +2,10 @@
 export const createFilmDetailsTemplate = (movie) => {
   const {comments, filmInfo, userDetails} = movie || {};
 
+
   const writers = filmInfo.writers.join(`, `);
   const actors = filmInfo.actors.join(`, `);
-  const monthRelease = new Date(filmInfo.release.date).toLocaleString(`en-US'`, {month: `long`});
+  const monthRelease = new Date(filmInfo.release.date).toLocaleString(`en-US`, {month: `long`});
   const dayRelease = new Date(filmInfo.release.date).toLocaleString(`en-US`, {day: `numeric`});
   const yearRelease = new Date(filmInfo.release.date).toLocaleString(`en-US`, {year: `numeric`});
   const releaseDate = (dayRelease + monthRelease + yearRelease);

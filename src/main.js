@@ -8,10 +8,11 @@ import {createFilmDetailsTemplate} from "./view/film-detail.js";
 import {generateMovie, generateRatingUser} from "./mock/film.js";
 import {generateFilter} from "./mock/filter.js";
 import {isNotMovie} from "./view/service-replies.js";
+import {renderTemplate} from "./utils.js";
 
 
 
-const countOfdisplayedMovie = 5;
+const COUNT_OF_DISPLAYED_MOVIE = 5;
 const MOVIE_CARDS = 6;
 const MOVIE_CARDS_EXTRA = 2;
 
@@ -19,7 +20,7 @@ const MOVIE_CARDS_EXTRA = 2;
 
 
 const movies = new Array(MOVIE_CARDS).fill().map(generateMovie);
-const UserProperties = generateRatingUser();
+const ratingUser = generateRatingUser();
 const filters = generateFilter(movies);
 
 
@@ -39,7 +40,7 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 const countFilmsElement = document.querySelector(`.footer__statistics`);
 
-render(headerElement, createUserTemplate(UserProperties), RenderPosition.BEFO);
+render(headerElement, createUserTemplate(ratingUser), RenderPosition.BEFO);
 render(mainElement, createMenuTemplate(filters), RenderPosition.BEFO);
 render(mainElement, createFilterTemplate(), RenderPosition.BEFO);
 render(mainElement, createBoardTemplate(), RenderPosition.BEFO);
@@ -48,8 +49,8 @@ const cardsContainer = document.querySelector(`.films-list__container`);
 
 
 const renderFilmCard = (movies) => {
-  if (movies.length > 0) {
-    for (let i = 0; i < countOfdisplayedMovie; i++) {
+  if ( movies.length > 0) {
+    for (let i = 0; i < COUNT_OF_DISPLAYED_MOVIE; i++) {
       if ( i < movies.length) {
         render(cardsContainer, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
       }
@@ -57,7 +58,7 @@ const renderFilmCard = (movies) => {
   } else {
     render(cardsContainer, isNotMovie(), RenderPosition.BEFO);
   }
-  if (movies.length <= countOfdisplayedMovie) {
+  if (movies.length <= COUNT_OF_DISPLAYED_MOVIE) {
     buttonShowMore.classList.add(`visually-hidden`);
   }
 }
@@ -69,19 +70,19 @@ renderFilmCard(movies);
 buttonShowMore.addEventListener('click', () => {
   const countRendered = Array.from(document.querySelectorAll(`.film-card`)).length;
   const countIsNotRendered = movies.length - countRendered;
-  let constWillBeRendered = 0;
+  let willBeRendered = 0;
 
-  if (countIsNotRendered >= countOfdisplayedMovie) {
-    constWillBeRendered = countRendered + countOfdisplayedMovie;
+  if (countIsNotRendered >= COUNT_OF_DISPLAYED_MOVIE) {
+    willBeRendered = countRendered + COUNT_OF_DISPLAYED_MOVIE;
   }
   else {
-    constWillBeRendered = countIsNotRendered + countRendered;
+    willBeRendered = countIsNotRendered + countRendered;
   }
 
-  for (let i = countRendered; i < constWillBeRendered; i++) {
+  for (let i = countRendered; i < willBeRendered; i++) {
     render(cardsContainer, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
   }
-  if (constWillBeRendered === movies.length) {
+  if (willBeRendered === movies.length) {
     buttonShowMore.classList.add(`visually-hidden`);
   }
 

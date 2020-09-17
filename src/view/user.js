@@ -1,5 +1,5 @@
-export const createUserTemplate = (UserProperties) => {
-  const {rating} = UserProperties;
+export const createUserTemplate = (ratingUser) => {
+  const {rating} = ratingUser;
 
   const getStatus = (ratingValue) => {
 
