@@ -23,7 +23,7 @@ const MOVIE_CARDS_EXTRA = 2;
 
 
 const movies = new Array(MOVIE_CARDS).fill().map(generateMovie);
-const UserProperties = generateRatingUser();
+const ratingUser = generateRatingUser();
 const filters = generateFilter(movies);
 
 
@@ -42,7 +42,6 @@ const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
-
 const renderFilm = (listContainer, movie) => {
   const filmComponent = new FilmCard(movie);
   const filmDetailComponent = new FilmDetail(movie);
@@ -55,12 +54,11 @@ const renderFilm = (listContainer, movie) => {
     evt.preventDefault();
     document.body.removeChild(filmDetailComponent.getElement());
   })
-
-
   render(listContainer, filmComponent.getElement(), RenderPosition.BEFO);
 }
 
 render(headerElement, new User(UserProperties).getElement(), RenderPosition.BEFO);
+
 
 
 render(mainElement, menuComponent.getElement(), RenderPosition.BEFO);
@@ -70,6 +68,7 @@ render(mainElement, new Sort().getElement(), RenderPosition.BEFO);
 render(mainElement, boardComponent.getElement(), RenderPosition.BEFO);
 
 render(boardComponent.getElement(), filmListComponent.getElement(), RenderPosition.BEFO);
+
 
 const listContainer  = filmListComponent.getElement().querySelector(`.films-list__container`);
 
