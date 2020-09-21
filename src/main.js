@@ -1,18 +1,21 @@
-import {createUserTemplate} from "./view/user.js";
-import {createMenuTemplate} from "./view/menu.js";
-import {createFilterTemplate} from "./view/filter.js";
-import {createFilmCardTemplate} from "./view/film-card.js";
-import {createBoardTemplate} from "./view/board-films.js";
-import {createStatisticFilmsTemplate} from "./view/statistic-films.js";
-import {createFilmDetailsTemplate} from "./view/film-detail.js";
+import User from "./view/user.js";
+import SiteMenu from "./view/menu.js";
+import Filter from "./view/filter.js";
+import Sort from "./view/sort.js";
+import BoardView from "./view/board.js";
+import FilmListView from "./view/film-list.js";
+import FilmCard from "./view/film-card.js";
+import LoadMoreButtonView from "./view/load-more-button-view.js";
+import Statistic from "./view/statistic-films.js";
+import FilmDetail from "./view/film-detail.js";
 import {generateMovie, generateRatingUser} from "./mock/film.js";
 import {generateFilter} from "./mock/filter.js";
 import {isNotMovie} from "./view/service-replies.js";
-import {renderTemplate} from "./utils.js";
+import {renderTemplate, render} from "./utils.js";
 
 
 
-const COUNT_OF_DISPLAYED_MOVIE = 5;
+const FILM_COUNT_PER_STEP = 5;
 const MOVIE_CARDS = 6;
 const MOVIE_CARDS_EXTRA = 2;
 
@@ -27,76 +30,70 @@ const filters = generateFilter(movies);
 
 const RenderPosition = {
   BEFO: `beforeend`,
-  AFTE: `afterend`
+  AFTE: `afterbegin`
 };
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
+const menuComponent = new SiteMenu();
+const boardComponent = new BoardView();
+const filmListComponent = new FilmListView();
+const statComponent = new Statistic();
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
-const countFilmsElement = document.querySelector(`.footer__statistics`);
 
-render(headerElement, createUserTemplate(ratingUser), RenderPosition.BEFO);
-render(mainElement, createMenuTemplate(filters), RenderPosition.BEFO);
-render(mainElement, createFilterTemplate(), RenderPosition.BEFO);
-render(mainElement, createBoardTemplate(), RenderPosition.BEFO);
+const renderFilm = (listContainer, movie) => {
+  const filmComponent = new FilmCard(movie);
+  const filmDetailComponent = new FilmDetail(movie);
+  filmComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    document.body.appendChild(filmDetailComponent.getElement());
+  })
 
-const cardsContainer = document.querySelector(`.films-list__container`);
-
-
-const renderFilmCard = (movies) => {
-  if ( movies.length > 0) {
-    for (let i = 0; i < COUNT_OF_DISPLAYED_MOVIE; i++) {
-      if ( i < movies.length) {
-        render(cardsContainer, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
-      }
-    }
-  } else {
-    render(cardsContainer, isNotMovie(), RenderPosition.BEFO);
-  }
-  if (movies.length <= COUNT_OF_DISPLAYED_MOVIE) {
-    buttonShowMore.classList.add(`visually-hidden`);
-  }
+  filmDetailComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    document.body.removeChild(filmDetailComponent.getElement());
+  })
+  render(listContainer, filmComponent.getElement(), RenderPosition.BEFO);
 }
-const buttonShowMore = document.querySelector(`.films-list__show-more`);
 
-renderFilmCard(movies);
-
-
-buttonShowMore.addEventListener('click', () => {
-  const countRendered = Array.from(document.querySelectorAll(`.film-card`)).length;
-  const countIsNotRendered = movies.length - countRendered;
-  let willBeRendered = 0;
-
-  if (countIsNotRendered >= COUNT_OF_DISPLAYED_MOVIE) {
-    willBeRendered = countRendered + COUNT_OF_DISPLAYED_MOVIE;
-  }
-  else {
-    willBeRendered = countIsNotRendered + countRendered;
-  }
-
-  for (let i = countRendered; i < willBeRendered; i++) {
-    render(cardsContainer, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
-  }
-  if (willBeRendered === movies.length) {
-    buttonShowMore.classList.add(`visually-hidden`);
-  }
-
-});
+render(headerElement, new User(UserProperties).getElement(), RenderPosition.BEFO);
 
 
-const extraListFilms = document.querySelectorAll(`.films-list--extra`);
 
-// for (let i = 0; i < extraListFilms.length; i++) {
-//   for (let j = 0; j < MOVIE_CARDS_EXTRA; j++) {
-//     const containerFilms = extraListFilms[i].querySelector(`.films-list__container`);
-//     render(containerFilms, createFilmCardTemplate(movies[i]), RenderPosition.BEFO);
-//   }
-// }
+render(mainElement, menuComponent.getElement(), RenderPosition.BEFO);
+render(menuComponent.getElement(), new Filter(filters).getElement(), RenderPosition.AFTE);
+render(mainElement, new Sort().getElement(), RenderPosition.BEFO);
 
-render(countFilmsElement, createStatisticFilmsTemplate(), RenderPosition.BEFO);
-render(footerElement, createFilmDetailsTemplate(movies[0]), RenderPosition.AFTE);
+render(mainElement, boardComponent.getElement(), RenderPosition.BEFO);
+
+render(boardComponent.getElement(), filmListComponent.getElement(), RenderPosition.BEFO);
+
+
+const listContainer  = filmListComponent.getElement().querySelector(`.films-list__container`);
+
+
+for (let i = 0; i < Math.min(movies.length, FILM_COUNT_PER_STEP); i++) {
+  renderFilm(listContainer, movies[i]);
+}
+
+if (movies.length > FILM_COUNT_PER_STEP) {
+  let renderedFilmCount = FILM_COUNT_PER_STEP;
+  const loadMoreButtonComponent = new LoadMoreButtonView();
+  render(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFO);
+  loadMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    movies
+      .slice(renderedFilmCount, renderedFilmCount + FILM_COUNT_PER_STEP)
+      .forEach((movie) => renderFilm(listContainer, movie));
+
+      renderedFilmCount += FILM_COUNT_PER_STEP;
+
+    if (renderedFilmCount >= movies.length) {
+      loadMoreButtonComponent.getElement().remove();
+      loadMoreButtonComponent.removeElement();
+    }
+  });
+}
+
+render(footerElement, statComponent.getElement(), RenderPosition.BEFO);

@@ -1,18 +1,22 @@
+
 import {createElement} from "../utils.js";
 
-const createStatisticFilmsTemplate = () => {
-  return `<section class="footer__statistics">
-    <p>130 291 movies inside</p>
+const createListExtraFilmTemplate = () => {
+  return `<section class="films-list--extra">
+    <h2 class="films-list__title">Top rated</h2>
+    <div class="films-list__container">
+    </div>
   </section>`;
 };
 
-export default class Statistic {
+
+export default class FilmListExtraView {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createStatisticFilmsTemplate();
+    return createListExtraFilmTemplate();
   }
 
   getElement() {

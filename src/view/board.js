@@ -1,18 +1,18 @@
 import {createElement} from "../utils.js";
 
-const createStatisticFilmsTemplate = () => {
-  return `<section class="footer__statistics">
-    <p>130 291 movies inside</p>
-  </section>`;
+const createBoardTemplate = () => {
+  return `<section class="films">
+          </section>`;
 };
 
-export default class Statistic {
+
+export default class BoardView {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createStatisticFilmsTemplate();
+    return createBoardTemplate();
   }
 
   getElement() {

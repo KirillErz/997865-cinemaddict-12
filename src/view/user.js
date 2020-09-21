@@ -1,5 +1,8 @@
-export const createUserTemplate = (ratingUser) => {
-  const {rating} = ratingUser;
+import {createElement} from "../utils.js";
+
+const createUserTemplate = (UserProperti) => {
+  const {rating} = UserProperti;
+
 
   const getStatus = (ratingValue) => {
 
@@ -20,3 +23,26 @@ export const createUserTemplate = (ratingUser) => {
     <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
   </section>`;
 };
+
+export default class User {
+  constructor(properti) {
+    this._properti = properti;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createUserTemplate(this._properti);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

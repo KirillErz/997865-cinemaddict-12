@@ -1,5 +1,7 @@
 
-export const createFilmDetailsTemplate = (movie) => {
+import {createElement} from "../utils.js";
+
+const createFilmDetailsTemplate = (movie) => {
   const {comments, filmInfo, userDetails} = movie || {};
 
 
@@ -57,7 +59,7 @@ export const createFilmDetailsTemplate = (movie) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
+          <img class="film-details__poster-img" src="${filmInfo.poster}" alt="">
 
           <p class="film-details__age">${filmInfo.ageRating}+</p>
         </div>
@@ -167,3 +169,25 @@ export const createFilmDetailsTemplate = (movie) => {
 };
 
 
+export default class FilmDetail {
+  constructor(movie) {
+    this._movie = movie;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
