@@ -4,6 +4,7 @@ import {createElement} from "../utils.js";
 const createFilmDetailsTemplate = (movie) => {
   const {comments, filmInfo, userDetails} = movie || {};
 
+
   const writers = filmInfo.writers.join(`, `);
   const actors = filmInfo.actors.join(`, `);
   const monthRelease = new Date(filmInfo.release.date).toLocaleString(`en-US`, {month: `long`});

@@ -3,6 +3,7 @@ import {createElement} from "../utils.js";
 const createUserTemplate = (UserProperti) => {
   const {rating} = UserProperti;
 
+
   const getStatus = (ratingValue) => {
 
     switch (true) {
