@@ -1,7 +1,7 @@
 import {createElement} from "../utils.js";
 
 const isNotMovie = () => {
-  return `<h2 class="films-list__title">All movies. Upcoming</h2>`
+  return `<h2 class="films-list__title">All movies. Upcoming</h2>`;
 };
 
 
