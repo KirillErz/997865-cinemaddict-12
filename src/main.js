@@ -55,7 +55,7 @@ const renderFilm = (listContainer, movie) => {
     evt.preventDefault();
     document.body.removeChild(filmDetailComponent.getElement());
   })
-  
+
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === KEY_CODE_ESC) {
       document.body.removeChild(filmDetailComponent.getElement());
@@ -64,7 +64,7 @@ const renderFilm = (listContainer, movie) => {
   render(listContainer, filmComponent.getElement(), RenderPosition.BEFO);
 }
 
-render(headerElement, new User(UserProperties).getElement(), RenderPosition.BEFO);
+render(headerElement, new User(ratingUser).getElement(), RenderPosition.BEFO);
 
 
 
