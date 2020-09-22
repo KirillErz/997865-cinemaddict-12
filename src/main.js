@@ -1,3 +1,4 @@
+import {KEY_CODE_ESC} from "../src/const.js";
 import User from "./view/user.js";
 import SiteMenu from "./view/menu.js";
 import Filter from "./view/filter.js";
@@ -10,13 +11,13 @@ import Statistic from "./view/statistic-films.js";
 import FilmDetail from "./view/film-detail.js";
 import {generateMovie, generateRatingUser} from "./mock/film.js";
 import {generateFilter} from "./mock/filter.js";
-import {isNotMovie} from "./view/service-replies.js";
+import ServiceReplies from "./view/service-replies.js";
 import {renderTemplate, render} from "./utils.js";
 
 
 
 const FILM_COUNT_PER_STEP = 5;
-const MOVIE_CARDS = 6;
+const MOVIE_CARDS = 10;
 const MOVIE_CARDS_EXTRA = 2;
 
 
@@ -56,6 +57,12 @@ const renderFilm = (listContainer, movie) => {
     document.body.removeChild(filmDetailComponent.getElement());
   })
 
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === KEY_CODE_ESC) {
+      document.body.removeChild(filmDetailComponent.getElement());
+    }
+  });
+
 
   render(listContainer, filmComponent.getElement(), RenderPosition.BEFO);
 }
@@ -73,9 +80,12 @@ render(boardComponent.getElement(), filmListComponent.getElement(), RenderPositi
 
 const listContainer  = filmListComponent.getElement().querySelector(`.films-list__container`);
 
-
-for (let i = 0; i < Math.min(movies.length, FILM_COUNT_PER_STEP); i++) {
-  renderFilm(listContainer, movies[i]);
+if (movies.length > 0) {
+  for (let i = 0; i < Math.min(movies.length, FILM_COUNT_PER_STEP); i++) {
+    renderFilm(listContainer, movies[i]);
+  }
+} else {
+  render(listContainer, new ServiceReplies().getElement(), RenderPosition.BEFO);
 }
 
 if (movies.length > FILM_COUNT_PER_STEP) {

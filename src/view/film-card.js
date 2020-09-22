@@ -2,7 +2,6 @@
 import {createElement} from "../utils.js";
 
 const createFilmCardTemplate = (movie) => {
-
   const {comments, filmInfo, userDetails} = movie;
 
   const date = new Date(filmInfo.release.date).getFullYear();
