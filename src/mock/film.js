@@ -69,12 +69,6 @@ export const generateRatingUser = () => {
   return {rating: getRandomInteger(1, 100)};
 };
 
-function generateRandomDate(start, end) {
-  return new Date(start + Math.random() * (end - start));
-}
-
-
-
 export const generateMovie = () => {
   return {
     "id": generateIdFilm(),
@@ -93,7 +87,7 @@ export const generateMovie = () => {
         `Morgan Freeman`
       ],
       "release": {
-        "date": `2019-0${getRandomInteger(1,9)}-0${getRandomInteger(1,9)}T16:12:32.554Z`,
+        "date": `2019-0${getRandomInteger(1, 9)}-0${getRandomInteger(1, 9)}T16:12:32.554Z`,
         "releaseCountry": `Finland`
       },
       "runtime": 73,

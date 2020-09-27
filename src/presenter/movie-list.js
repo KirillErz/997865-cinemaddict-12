@@ -65,7 +65,6 @@ export default class MovieList {
       return;
     }
     this._sortFilms(sortType);
-    console.log(this._boardFilms);
     this._clearFilmList();
     this._renderMovieList();
   }

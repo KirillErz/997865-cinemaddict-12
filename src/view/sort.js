@@ -22,8 +22,8 @@ export default class Sort extends AbstractView {
   // проверка на ссылку что такое А?
 
   _clearSortStyle() {
-    this._element.querySelectorAll('.sort__button')
-    .forEach((element) => element.classList.remove(`sort__button--active`))
+    this._element.querySelectorAll(`.sort__button`)
+    .forEach((element) => element.classList.remove(`sort__button--active`));
   }
 
   _sortTypeChangeHandler(evt) {
