@@ -20,12 +20,22 @@ export default class Sort extends AbstractView {
     return createSortTemplate();
   }
   // проверка на ссылку что такое А?
+
+  _clearSortStyle() {
+    this._element.querySelectorAll('.sort__button')
+    .forEach((element) => element.classList.remove(`sort__button--active`))
+  }
+
   _sortTypeChangeHandler(evt) {
+
+
     if (evt.target.tagName !== `A`) {
       return;
     }
 
     evt.preventDefault();
+    this._clearSortStyle();
+    evt.target.classList.add(`sort__button--active`);
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
 

@@ -47,6 +47,7 @@ export default class MovieList {
     switch (sortType) {
       case SortType.RATING:
         this._boardFilms.sort(sortFilmRating);
+
         break;
       case SortType.DATE:
         this._boardFilms.sort(sortFilmRelease);
@@ -60,9 +61,13 @@ export default class MovieList {
 
 
   _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
     this._sortFilms(sortType);
-    // this._clearFilmList();
-    // this._renderMovieList();
+    console.log(this._boardFilms);
+    this._clearFilmList();
+    this._renderMovieList();
   }
 
   _renderSort() {
@@ -136,7 +141,7 @@ export default class MovieList {
   }
 
   _clearFilmList() {
-    this._filmListComponent.getElement().innerHTML = ``;
+    this._filmListComponent.getElement().firstElementChild.innerHTML = ``;
     this._renderMovieCount = FILM_COUNT_PER_STEP;
   }
 
