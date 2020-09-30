@@ -1,16 +1,13 @@
 import BoardView from "../view/board.js";
 import SortView from "../view/sort.js";
 import FilmListView from "../view/film-list.js";
-import FilmCardView from "../view/film-card.js";
-import FilmDetaildView from "../view/film-detail.js";
 import LoadMoreButtonView from "../view/load-more-button-view.js";
 import ServiceRepliesView from "../view/service-replies.js";
+import MoviePresenter from "./movie.js";
+import {updateItem} from "../utils/common.js";
 import {render, RenderPosition} from "../utils/render.js";
 import {SortType} from "../const.js";
 import {sortFilmRating, sortFilmRelease} from "../utils/film-card.js";
-
-import {KEY_CODE_ESC} from "../const.js";
-
 
 const FILM_COUNT_PER_STEP = 5;
 
@@ -24,7 +21,9 @@ export default class MovieList {
     this._filmListComponent = new FilmListView();
     this._serviceRepliesComponent = new ServiceRepliesView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
+    this._moviePresenter = {};
 
+    this._handleMovieChange = this._handleMovieChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
@@ -69,6 +68,12 @@ export default class MovieList {
     this._renderMovieList();
   }
 
+  _handleMovieChange(updatedMovie) {
+    this._boardFilms = updateItem(this._boardFilms, updatedMovie);
+    this._sourceBoardFilms = updateItem(this._sourceBoardFilms, updatedMovie);
+    this._moviePresenter[updatedMovie.id].init(updatedMovie);
+  }
+
   _renderSort() {
     // Метод для рендеринга сортировки
     render(this._boardComponent, this._sortComponent.getElement(), RenderPosition.AFTERBEGIN);
@@ -76,23 +81,9 @@ export default class MovieList {
   }
 
   _renderFilmCard(movie) {
-    const filmComponent = new FilmCardView(movie);
-    const filmDetailComponent = new FilmDetaildView(movie);
-    filmComponent.setOpenClickHandler(() => {
-      document.body.appendChild(filmDetailComponent.getElement());
-    });
-
-    filmDetailComponent.setCloseClickHandler(() => {
-      document.body.removeChild(filmDetailComponent.getElement());
-    });
-
-    document.addEventListener(`keydown`, function (evt) {
-      if (evt.keyCode === KEY_CODE_ESC) {
-        evt.preventDefault();
-        document.body.removeChild(filmDetailComponent.getElement());
-      }
-    });
-    render(this._filmListComponent.getElement().firstElementChild, filmComponent.getElement(), RenderPosition.BEFOREEND);
+    const moviePresenter = new MoviePresenter(this._filmListComponent.getElement().firstElementChild, this._handleMovieChange);
+    moviePresenter.init(movie);
+    this._moviePresenter[movie.id] = moviePresenter;
   }
 
   _renderFilmsCards(from, to) {
@@ -140,7 +131,10 @@ export default class MovieList {
   }
 
   _clearFilmList() {
-    this._filmListComponent.getElement().firstElementChild.innerHTML = ``;
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
     this._renderMovieCount = FILM_COUNT_PER_STEP;
   }
 
